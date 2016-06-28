@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+
+    <appender name="stdoutAppender" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%5p [%t] (%F:%L) - %m%n" />
+        </layout>
+    </appender>
+
+
+    <appender name="fileAppender" class="org.apache.log4j.RollingFileAppender">
+
+        <param name="file" value="cluster.log" />
+        <param name="maxFileSize" value="1MB" />
+        <param name="maxBackupIndex" value="4" />
+        <param name="threshold" value="ALL" />
+
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{HH:mm:ss} %-5p %t %c{2} - %m%n"/>
+        </layout>
+
+        <!--filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="INFO"/>
+            <param name="levelMax" value="INFO" />
+        </filter-->
+
+    </appender>
+
+    <category name="org.apache">
+        <priority value="WARN" />
+        <appender-ref ref="stdoutAppender"/>
+    </category>
+
+    <category name="edu.bgce.cse">
+        <priority value="DEBUG" />
+        <appender-ref ref="stdoutAppender"/>
+    </category>
+
+    <root>
+        <priority value="ALL"/>
+        <appender-ref ref="fileAppender"/>
+    </root>
+
+</log4j:configuration>

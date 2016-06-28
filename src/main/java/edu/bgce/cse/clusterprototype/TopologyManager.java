@@ -4,10 +4,18 @@ import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
 import org.apache.storm.StormSubmitter;
 import org.apache.storm.topology.TopologyBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TopologyManager {
 
+    private static Logger logger = LoggerFactory.getLogger(TopologyManager.class);
+
     public static void main(String[] args) throws Exception {
+
+
+        logger.info("Starting Topology Manager...");
+
         TopologyBuilder builder = new TopologyBuilder();
 
         builder.setSpout("word", new FilesystemSpout(), 10);
@@ -19,11 +27,13 @@ public class TopologyManager {
         conf.setDebug(true);
 
         if (args != null && args.length > 0) {
+            logger.info("Running inside a real cluster.");
             conf.setNumWorkers(3);
 
             StormSubmitter.submitTopologyWithProgressBar(args[0], conf, builder.createTopology());
         }
         else {
+            logger.info("Running as LocalCluster");
 
             LocalCluster cluster = new LocalCluster();
             cluster.submitTopology("test", conf, builder.createTopology());
